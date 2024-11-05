@@ -51,6 +51,6 @@ const score = useBasketballStore()
 
 <style>
 td {
-  @apply text-center min-w-12 px-2 py-1 border-b border-r border-gray-200 border-opacity-20;
+  @apply text-center min-w-12 px-2 border-b border-r border-gray-200 border-opacity-20;
 }
 </style>

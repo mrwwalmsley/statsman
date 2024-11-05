@@ -1,15 +1,15 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 export const stats = [
+  { abbreviation: 'OR', color: 'orange' },
+  { abbreviation: 'DR', color: 'orange' },
+  { abbreviation: 'A', color: 'yellow' },
   { abbreviation: '2P', color: 'blue' },
   { abbreviation: '2A', color: 'blue' },
   { abbreviation: '3P', color: 'lightblue' },
   { abbreviation: '3A', color: 'lightblue' },
   { abbreviation: 'FT', color: 'blue' },
   { abbreviation: 'FA', color: 'blue' },
-  { abbreviation: 'OR', color: 'orange' },
-  { abbreviation: 'DR', color: 'orange' },
-  { abbreviation: 'A', color: 'yellow' },
   { abbreviation: 'ST', color: 'red' },
   { abbreviation: 'BS', color: 'red' },
   { abbreviation: 'TO', color: 'black' },
