@@ -4,7 +4,7 @@ const score = useBasketballStore()
 
 <template>
   <div>
-    <table mx-auto cursor-pointer>
+    <table text-5 mx-auto cursor-pointer>
       <tr text-sm opacity-60>
         <td text-left>
           #
@@ -51,6 +51,6 @@ const score = useBasketballStore()
 
 <style>
 td {
-  @apply px-2;
+  @apply text-center min-w-12 py-1 border-b border-gray-200 border-opacity-20;
 }
 </style>
