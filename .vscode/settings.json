@@ -42,5 +42,8 @@
   "interline-translate.knownPopularWordCount": 6000,
   "iconify.annotations": true,
   "iconify.inplace": true,
-  "css.lint.unknownAtRules": "ignore"
+  "css.lint.unknownAtRules": "ignore",
+  "cSpell.words": [
+    "Nuxt"
+  ]
 }

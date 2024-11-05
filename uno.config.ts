@@ -9,7 +9,7 @@ import {
   transformerVariantGroup,
 } from 'unocss'
 
-import { stats } from './app/composables/basketball'
+import { stats } from './app/utils/basketball'
 
 export default defineConfig({
   shortcuts: [

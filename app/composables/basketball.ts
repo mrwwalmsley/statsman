@@ -1,35 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-export const offense = [
-  { abbreviation: 'A', color: 'yellow' },
-  { abbreviation: 'OR', color: 'orange' },
-  { abbreviation: '2P', color: 'blue' },
-  { abbreviation: '2A', color: 'blue' },
-  { abbreviation: '3P', color: 'lightblue' },
-  { abbreviation: '3A', color: 'lightblue' },
-  { abbreviation: 'FT', color: 'blue' },
-  { abbreviation: 'FA', color: 'blue' },
-  { abbreviation: 'TO', color: 'gray' },
-]
-
-export const defense = [
-  { abbreviation: 'BS', color: 'red' },
-  { abbreviation: 'DR', color: 'orange' },
-  { abbreviation: 'ST', color: 'red' },
-  { abbreviation: 'PF', color: 'gray' },
-  // 'onePointFoul',
-  // 'twoPointFoul',
-  // 'onePointFoulsDrawn',
-  // 'twoPointFoulsDrawn',
-]
-
-const stats = [...offense, ...defense]
-
-const initialValues = stats.reduce((acc, stat) => {
-  acc[stat.abbreviation] = 0
-  return acc
-}, {} as Record<string, number>)
-
 function createInitialPlayers() {
   return [
     // { number: '1', name: 'Teia', sub: false },
@@ -50,14 +20,19 @@ function createInitialPlayers() {
     { number: '16', name: 'Robin', sub: true },
   ].map(player => ({
     ...player,
-    stats: { ...initialValues },
+    visible: true,
+    stats: stats.reduce((acc, stat) => {
+      acc[stat.abbreviation] = 0
+      return acc
+    }, {} as Record<string, number>),
   }))
 }
 
 export const useBasketballStore = defineStore('basketball', () => {
   const players = ref(createInitialPlayers())
 
-  const actions = ref([] as Array<{ index: number, action: string }>)
+  const actions = ref([] as Array<{ index: number, action: string, timestamp: Date }>)
+  const isPeriodRunning = ref(false)
 
   function rebuildStats() {
     const newPlayers = createInitialPlayers()
@@ -65,20 +40,39 @@ export const useBasketballStore = defineStore('basketball', () => {
     actions.value.forEach(({ index, action }) => {
       const player = newPlayers[index]!
 
-      if (action === 'sub') {
+      if (action === 'start') {
+        isPeriodRunning.value = true
+      }
+      else if (action === 'end') {
+        isPeriodRunning.value = false
+      }
+      else if (action === 'hide') {
+        player.visible = false
+      }
+      else if (action === 'sub') {
         player.sub = !player.sub
       }
       else {
         player.stats[action]!++
         player.sub = false
+
+        if (action === '2P' || action === '3P' || action === 'FT') {
+          const attemptAction = `${action.charAt(0)}A`
+          player.stats[attemptAction]!++
+        }
       }
     })
 
     players.value = newPlayers
   }
 
-  function input(index: number, action: string) {
-    actions.value.push({ index, action })
+  function remove(date: Date) {
+    actions.value = actions.value.filter(action => action.timestamp !== date)
+    rebuildStats()
+  }
+
+  function input(action: string, index = -1) {
+    actions.value.push({ index, action, timestamp: new Date() })
     rebuildStats()
   }
 
@@ -87,16 +81,28 @@ export const useBasketballStore = defineStore('basketball', () => {
     rebuildStats()
   }
 
+  function getActionTime(index: number) {
+    const startTime = actions.value.slice(0, index + 1)
+      .findLast(({ action }) => action === 'start', index)
+      ?.timestamp
+    const actionTime = actions.value[index]?.timestamp
+    return getElapsedTime(startTime, actionTime)
+  }
+
   return {
+    getActionTime,
     actions,
     players,
     stats,
-    offense,
-    defense,
+    left,
+    right,
     input,
     undo,
+    remove,
+    isPeriodRunning,
   }
 })
 
-if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useBasketballStore, import.meta.hot))
+}
