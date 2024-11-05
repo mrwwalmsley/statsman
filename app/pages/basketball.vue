@@ -6,7 +6,7 @@ const score = useBasketballStore()
   <div>
     <table text-5 mx-auto cursor-pointer>
       <tr text-sm opacity-60>
-        <td text-left>
+        <td>
           #
         </td>
         <td text-left>
@@ -21,7 +21,7 @@ const score = useBasketballStore()
         :key="player.number"
         :class="player.sub ? 'opacity-30' : ''"
       >
-        <td text-left @click="score.input(index, 'sub')">
+        <td @click="score.input(index, 'sub')">
           {{ player.number }}
         </td>
         <td text-left @click="score.input(index, 'sub')">
@@ -51,6 +51,6 @@ const score = useBasketballStore()
 
 <style>
 td {
-  @apply text-center min-w-12 px-2 py-1 border-b border-gray-200 border-opacity-20;
+  @apply text-center min-w-12 px-2 py-1 border-b border-r border-gray-200 border-opacity-20;
 }
 </style>
