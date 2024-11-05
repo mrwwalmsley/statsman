@@ -1,3 +1,5 @@
 # TODO
 
-[] Handle subs
+[] Score for opposition
+[] History displays the scores
+[] Display +-, time on court
