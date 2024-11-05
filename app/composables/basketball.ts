@@ -29,7 +29,7 @@ function createInitialPlayers() {
   return [
     { number: '1', name: 'Teia', sub: false },
     { number: '2', name: 'Elyssa', sub: false },
-    { number: '3', name: 'Katie-Rose', sub: false },
+    { number: '3', name: 'Katie', sub: false },
     { number: '4', name: 'Madeline', sub: false },
     { number: '5', name: 'Raine', sub: false },
     { number: '6', name: 'Braxton', sub: true },
