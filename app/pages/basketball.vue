@@ -6,13 +6,17 @@ const score = useBasketballStore()
   <div>
     <table text-5 mx-auto cursor-pointer>
       <tr text-sm opacity-60>
+
+        <td v-for="stat in score.offense" :key="stat.abbreviation">
+          {{ stat.abbreviation }}
+        </td>
         <td>
           #
         </td>
         <td text-left>
           Name
         </td>
-        <td v-for="stat in score.stats" :key="stat.abbreviation">
+        <td v-for="stat in score.defense" :key="stat.abbreviation">
           {{ stat.abbreviation }}
         </td>
       </tr>
