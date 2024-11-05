@@ -65,6 +65,7 @@ export const useBasketballStore = defineStore('basketball', () => {
       }
       else {
         player.stats[action]!++
+        player.sub = false
       }
     })
 
@@ -72,11 +73,6 @@ export const useBasketballStore = defineStore('basketball', () => {
   }
 
   function input(index: number, action: string) {
-    // Check if the player is subbed
-    if (action !== 'sub' && players.value[index]!.sub) {
-      actions.value.push({ index, action: 'sub' })
-    }
-
     actions.value.push({ index, action })
     rebuildStats()
   }
