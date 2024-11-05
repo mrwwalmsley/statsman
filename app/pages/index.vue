@@ -8,7 +8,12 @@ const online = useOnline()
 
 <template>
   <div>
-    <Logos mb-6 />
+    <h1>Sports</h1>
+    <div my-4>
+      <NuxtLink to="/basketball" btn>
+        Basketball
+      </NuxtLink>
+    </div>
     <Suspense>
       <ClientOnly>
         <PageView v-if="online" />
