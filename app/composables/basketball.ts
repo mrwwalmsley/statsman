@@ -52,7 +52,7 @@ export const useBasketballStore = defineStore('basketball', () => {
       else if (action === 'sub') {
         player.sub = !player.sub
       }
-      else {
+      else if (index >= 0) {
         player.stats[action]!++
         player.sub = false
 
@@ -89,7 +89,33 @@ export const useBasketballStore = defineStore('basketball', () => {
     return getElapsedTime(startTime, actionTime)
   }
 
+  const teamScore = computed(() => actions.value.reduce((acc, action) => {
+    if (action.index >= 0) {
+      if (action.action === '2P')
+        return acc + 2
+      if (action.action === '3P')
+        return acc + 3
+      if (action.action === 'FT')
+        return acc + 1
+    }
+    return acc
+  }, 0))
+
+  const opponentScore = computed(() => actions.value.reduce((acc, action) => {
+    if (action.index < 0) {
+      if (action.action === '2P')
+        return acc + 2
+      if (action.action === '3P')
+        return acc + 3
+      if (action.action === 'FT')
+        return acc + 1
+    }
+    return acc
+  }, 0))
+
   return {
+    teamScore,
+    opponentScore,
     getActionTime,
     actions,
     players,

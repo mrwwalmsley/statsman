@@ -57,6 +57,27 @@ const time = computed(() => {
       >
         History
       </NuxtLink>
+      <button
+        w-10 btn
+        @click="score.input('FT')"
+      >
+        1
+      </button>
+      <button
+        w-10 btn
+        @click="score.input('2P')"
+      >
+        2
+      </button>
+      <button
+        w-10 btn
+        @click="score.input('3P')"
+      >
+        3
+      </button>
+      <div text-lg font-mono>
+        {{ score.opponentScore }} &ndash; {{ score.teamScore }}
+      </div>
     </div>
     <table mx-auto cursor-pointer text-5>
       <thead>
