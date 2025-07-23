@@ -21,7 +21,7 @@ const time = computed(() => {
   }
 
   const startIndex = score.actions
-    .findLastIndex(action => action.action === 'start')
+    ?.findLastIndex(action => action.action === 'start')
 
   const startTime = score.actions[startIndex]?.timestamp
   const endTime = score.actions.slice(startIndex)
