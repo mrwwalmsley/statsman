@@ -10,7 +10,7 @@ const online = useOnline()
   <div>
     <h1>Sports</h1>
     <div my-4>
-      <NuxtLink to="/basketball/celtics" btn>
+      <NuxtLink to="/basketball/phillies" btn>
         Basketball
       </NuxtLink>
     </div>
