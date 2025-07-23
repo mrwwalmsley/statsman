@@ -1,16 +1,14 @@
 <script setup lang="ts">
 const score = useBasketballStore()
+const router = useRouter()
 </script>
 
 <template>
   <div>
     <div flex justify-center gap-2 p-1 text-sm>
-      <NuxtLink
-        btn
-        to="/basketball"
-      >
+      <Button btn @click="router.back()">
         Back
-      </NuxtLink>
+      </Button>
     </div>
     <table mx-auto>
       <tbody>

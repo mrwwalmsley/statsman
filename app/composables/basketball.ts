@@ -1,33 +1,40 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-function createInitialPlayers() {
-  return [
-    // { number: '1', name: 'Teia', sub: false },
-    // { number: '2', name: 'Elyssa', sub: false },
-    // { number: '3', name: 'Katie', sub: false },
-    // { number: '4', name: 'Madeline', sub: false },
-    // { number: '5', name: 'Raine', sub: false },
-    // { number: '6', name: 'Braxton', sub: true },
-    // { number: '7', name: 'Maya', sub: true },
-    // { number: '8', name: 'Carter', sub: true },
-    // { number: '9', name: 'Haami', sub: false },
-    // { number: '10', name: 'Zach', sub: false },
-    // { number: '11', name: 'Ruffy', sub: false },
-    // { number: '12', name: 'Iharaira', sub: false },
-    // { number: '13', name: 'Elnez', sub: false },
-    // { number: '14', name: 'Isabel', sub: true },
-    // { number: '15', name: 'Zion', sub: true },
-    // { number: '16', name: 'Robin', sub: true },
-    { number: '4', name: 'Fin', sub: false },
-    { number: '5', name: 'Rakai', sub: false },
-    { number: '6', name: 'Peyton', sub: false },
-    { number: '7', name: 'Tamati', sub: true },
-    { number: '8', name: 'Thomas', sub: true },
-    { number: '10', name: 'Wolfe', sub: true },
-    { number: '11', name: 'Ihakara', sub: false },
-    { number: '15', name: 'Isaiah', sub: false },
-  ].map(player => ({
+const teams = [
+  {
+    id: 'celtics',
+    name: 'Celtics',
+    players: [
+      { number: '4', name: 'Haami' },
+      { number: '6', name: 'Tairawhiti' },
+      { number: '8', name: 'Robin' },
+      { number: '9', name: 'Zach' },
+      { number: '10', name: 'Elnez' },
+      { number: '11', name: 'Iharaira' },
+      { number: '12', name: 'Walker' },
+      { number: '13', name: 'Ruffy' },
+    ],
+  },
+  {
+    id: 'phillies',
+    name: 'Phillies',
+    players: [
+      { number: '4', name: 'Fin' },
+      { number: '5', name: 'Rakai' },
+      { number: '6', name: 'Peyton' },
+      { number: '7', name: 'Tamati' },
+      { number: '8', name: 'Thomas' },
+      { number: '10', name: 'Wolfe' },
+      { number: '11', name: 'Ihakara' },
+      { number: '15', name: 'Isaiah' },
+    ],
+  },
+]
+
+function createInitialPlayers(teamId: typeof teams[number]['id']) {
+  return teams.find(team => team.id === teamId)!.players.map(player => ({
     ...player,
+    sub: false,
     visible: true,
     stats: stats.reduce((acc, stat) => {
       acc[stat.abbreviation] = 0
@@ -37,13 +44,14 @@ function createInitialPlayers() {
 }
 
 export const useBasketballStore = defineStore('basketball', () => {
-  const players = ref(createInitialPlayers())
+  const route = useRoute('basketball-team')
+  const players = ref(createInitialPlayers(route.params.team))
 
   const actions = ref([] as Array<{ index: number, action: string, timestamp: Date }>)
   const isPeriodRunning = ref(false)
 
   function rebuildStats() {
-    const newPlayers = createInitialPlayers()
+    const newPlayers = createInitialPlayers(route.params.team)
 
     actions.value.forEach(({ index, action }) => {
       const player = newPlayers[index]!
@@ -122,6 +130,7 @@ export const useBasketballStore = defineStore('basketball', () => {
   }, 0))
 
   return {
+    teamId: route.params.team,
     teamScore,
     opponentScore,
     getActionTime,

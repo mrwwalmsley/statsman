@@ -109,10 +109,14 @@ const time = computed(() => {
             <td
               v-for="stat in score.left"
               :key="stat.abbreviation"
-              :class="`bg-${stat.color}-600`"
+              :class="{
+                [`bg-${stat.color}-600`]: true,
+                'opacity-60': player.stats[stat.abbreviation] === 0,
+                'text-white/20': player.stats[stat.abbreviation] === 0,
+              }"
               @click=" score.input(stat.abbreviation, index)"
             >
-              {{ player.stats[stat.abbreviation] }}
+              {{ player.stats[stat.abbreviation] || stat.abbreviation }}
             </td>
             <td @click="score.input('sub', index)">
               {{ player.number }}
@@ -123,10 +127,14 @@ const time = computed(() => {
             <td
               v-for="stat in score.right"
               :key="stat.abbreviation"
-              :class="`bg-${stat.color}-600`"
+              :class="{
+                [`bg-${stat.color}-600`]: true,
+                'opacity-60': player.stats[stat.abbreviation] === 0,
+                'text-white/20': player.stats[stat.abbreviation] === 0,
+              }"
               @click=" score.input(stat.abbreviation, index)"
             >
-              {{ player.stats[stat.abbreviation] }}
+              {{ player.stats[stat.abbreviation] || stat.abbreviation }}
             </td>
             <td
               @click=" score.input('hide', index)"
