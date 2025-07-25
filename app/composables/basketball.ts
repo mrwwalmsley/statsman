@@ -32,7 +32,8 @@ const teams = [
 ]
 
 function createInitialPlayers(teamId: typeof teams[number]['id']) {
-  return teams.find(team => team.id === teamId)!.players.map(player => ({
+  // return teams.find(team => team.id === teamId)!.players.map(player => ({
+  return teams[0]!.players.map(player => ({
     ...player,
     sub: false,
     visible: true,
@@ -45,7 +46,7 @@ function createInitialPlayers(teamId: typeof teams[number]['id']) {
 
 export const useBasketballStore = defineStore('basketball', () => {
   const route = useRoute('basketball-team')
-  const players = ref(createInitialPlayers(route.params.team))
+  const players = computed(() => createInitialPlayers(route.params.team))
 
   const actions = ref([] as Array<{ index: number, action: string, timestamp: Date }>)
   const isPeriodRunning = ref(false)
