@@ -1,6 +1,22 @@
 <script setup lang="ts">
+import { teams } from '~/composables/basketball'
+
 const score = useBasketballStore()
 const currentTime = ref(new Date())
+const router = useRouter()
+
+const route = useRoute('basketball-team')
+const teamId = computed(() => route.params.team)
+
+function changeTeam(teamId: string) {
+  router.push(`/basketball/${teamId}`)
+}
+
+// Reset store when team changes
+watch(() => score.teamId, () => {
+  score.actions = []
+  score.isPeriodRunning = false
+})
 
 let timer: NodeJS.Timeout | null = null
 
@@ -34,6 +50,16 @@ const time = computed(() => {
 <template>
   <div>
     <div flex justify-center gap-2 p-1 text-sm>
+      <select
+        class="border border-gray-300 rounded bg-white px-3 py-1 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+        :value="teamId"
+        @change="(e) => changeTeam((e.target as HTMLSelectElement).value)"
+      >
+        <option v-for="team in teams" :key="team.id" :value="team.id">
+          {{ team.name }}
+        </option>
+      </select>
+
       <div text-lg font-mono>
         {{ time }}
       </div>
@@ -45,14 +71,14 @@ const time = computed(() => {
       </button>
       <button
         w-20 btn
-        :opacity=" score.actions.length === 0 ? '30' : '100'"
+        :opacity="score.actions.length === 0 ? '30' : '100'"
         @click="score.undo"
       >
         Undo
       </button>
       <NuxtLink
         w-20 btn
-        :opacity=" score.actions.length === 0 ? '30' : '100'"
+        :opacity="score.actions.length === 0 ? '30' : '100'"
         to="/basketball/history"
       >
         History

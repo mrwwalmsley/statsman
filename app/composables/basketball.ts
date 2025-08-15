@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { left, right, stats } from '~/utils/basketball'
 
-const teams = [
+export const teams = [
   {
     id: 'celtics',
     name: 'Celtics',
@@ -13,6 +14,20 @@ const teams = [
       { number: '11', name: 'Iharaira' },
       { number: '12', name: 'Walker' },
       { number: '13', name: 'Ruffy' },
+    ],
+  },
+  {
+    id: 'hornets',
+    name: 'Hornets',
+    players: [
+      { number: '1', name: 'Haven' },
+      { number: '2', name: 'Lulu' },
+      { number: '3', name: 'Teranea' },
+      { number: '4', name: 'Israel' },
+      { number: '5', name: 'Tekoi' },
+      { number: '6', name: 'London' },
+      { number: '7', name: 'Leon' },
+      { number: '8', name: 'Marley' },
     ],
   },
   {
@@ -32,8 +47,8 @@ const teams = [
 ]
 
 function createInitialPlayers(teamId: typeof teams[number]['id']) {
-  // return teams.find(team => team.id === teamId)!.players.map(player => ({
-  return teams[0]!.players.map(player => ({
+  return teams.find(team => team.id === teamId)!.players.map(player => ({
+  // return teams[0]!.players.map(player => ({
     ...player,
     sub: false,
     visible: true,
@@ -46,13 +61,14 @@ function createInitialPlayers(teamId: typeof teams[number]['id']) {
 
 export const useBasketballStore = defineStore('basketball', () => {
   const route = useRoute('basketball-team')
-  const players = computed(() => createInitialPlayers(route.params.team))
+  const teamId = computed(() => route.params.team)
+  const players = ref(createInitialPlayers(teamId.value))
 
   const actions = ref([] as Array<{ index: number, action: string, timestamp: Date }>)
   const isPeriodRunning = ref(false)
 
   function rebuildStats() {
-    const newPlayers = createInitialPlayers(route.params.team)
+    const newPlayers = createInitialPlayers(teamId.value)
 
     actions.value.forEach(({ index, action }) => {
       const player = newPlayers[index]!
@@ -82,6 +98,10 @@ export const useBasketballStore = defineStore('basketball', () => {
 
     players.value = newPlayers
   }
+
+  watch(teamId, () => {
+    rebuildStats()
+  })
 
   function remove(date: Date) {
     actions.value = actions.value.filter(action => action.timestamp !== date)
